@@ -9,12 +9,10 @@ Joint::Joint(std::shared_ptr<Body> _Parent, std::shared_ptr<Body> _Child, Eigen:
     // set parent frame
     Eigen::Matrix4d T = _Parent->getT();
     mTParent2Joint = T.inverse() * _TFrame;
-    mnParentId = _Parent->getId();
 
     // set child frame
     T = _Child->getT();
     mTChild2Joint = T.inverse() * _TFrame;
-    mnChildId = _Child->getId();
 }
 
 Eigen::Matrix4d Joint::getTransformation()
@@ -25,6 +23,15 @@ Eigen::Matrix4d Joint::getTransformation()
                      0,            0, 1, 0,
                      0,            0, 0, 1;
     return mat;
+}
+
+void Joint::updateJoint(bool _IK)
+{
+    if(_IK || mJointType == JointType::PASSIVE)
+    {
+        Eigen::Matrix4d T = (mpParent.lock()->getT() * mTParent2Joint).inverse() * mpChild.lock()->getT() * mTChild2Joint;
+        mAngle = atan2(T(1,0), T(0,0));
+    }
 }
 
 void Joint::print()

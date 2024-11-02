@@ -32,10 +32,12 @@ add_library(Robot SHARED
     include/robotics/robot.h
     include/robotics/joint.h
     include/robotics/mathfunction.h
+    include/robotics/endeffector.h
     src/robotics/mathfunction.cpp
     src/robotics/joint.cpp
     src/robotics/body.cpp
     src/robotics/robot.cpp
+    src/robotics/endeffector.cpp
 )
 
 target_link_libraries(Robot Sophus::Sophus)
@@ -44,16 +46,17 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
 
 
-add_executable(optimization 
-    src/optimization.cpp
-)
+add_executable(optimization src/optimization/optimization.cpp)
 
-add_executable(optimizationSophus src/optimizationSophus.cpp)
+add_executable(optimizationSophus src/optimization/optimizationSophus.cpp)
 target_link_libraries(optimizationSophus Sophus::Sophus)
 
-add_executable(helloworld src/optimizationCeres.cpp)
+add_executable(helloworld src/optimization/optimizationCeres.cpp)
 target_link_libraries(helloworld ${CERES_LIBRARIES})
 
-add_executable(testFourBarLinkage src/main_testFourBarLinkabge.cpp)
-target_link_libraries(testFourBarLinkage Robot)
+add_executable(testFourBarLinkageFK src/main_testFourBarLinkabgeFK.cpp)
+target_link_libraries(testFourBarLinkageFK Robot)
+
+add_executable(testFourBarLinkageIK src/main_testFourBarLinkabgeIK.cpp)
+target_link_libraries(testFourBarLinkageIK Robot)
 

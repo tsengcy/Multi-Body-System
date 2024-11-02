@@ -12,9 +12,10 @@ Body::Body(Eigen::Matrix4d _TFrame, bool _bFixed)
 //     mvTJointCenter.push_back(_TJointCenter);
 // }
 
-void Body::setId(int _id)
+void Body::setId(int _id, int _moveid)
 {
     mnid = _id;
+    mnMoveId = _moveid;
 }
 
 void Body::print()

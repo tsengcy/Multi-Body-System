@@ -24,21 +24,31 @@ public:
 
     void setId(int _id){mnid = _id;}
 
+    int getId(){return mnid;}
+
     void setAngle(double _angle){mAngle = _angle;}
+
+    double getAngle(){return mAngle;}
 
     std::shared_ptr<Body> getParent(){return mpParent.lock();}
 
     Eigen::Matrix4d getTParent2Joint(){return mTParent2Joint;}
 
-    int getParentId(){return mnParentId;}
+    int getParentId(){return mpParent.lock()->getId();}
+
+    int getParentMoveId(){return mpParent.lock()->getMoveId();}
 
     std::shared_ptr<Body> getChild(){return mpChild.lock();}
 
     Eigen::Matrix4d getTChild2Joint(){return mTChild2Joint;}
 
-    int getChildId(){return mnChildId;}
+    int getChildId(){return mpChild.lock()->getId();}
+
+    int getChildMoveId(){return mpChild.lock()->getMoveId();}
 
     Eigen::Matrix4d getTransformation();
+
+    void updateJoint(bool _IK=false);
 
     void print();
 
@@ -47,23 +57,15 @@ private:
 
     Eigen::Matrix4d mTParent2Joint;
 
-    int mnParentId;
-
     std::weak_ptr<Body> mpChild;
 
     Eigen::Matrix4d mTChild2Joint;
-
-    int mnChildId;
 
     int mnid;
 
     double mAngle{0};
 
     JointType mJointType;
-
-    
-
-    
 };
 
 #endif //_JOINT_H__
